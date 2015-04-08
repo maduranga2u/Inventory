@@ -1,0 +1,27 @@
+Todo :
+- Use model methods where ever possible
+- Backup
+- Add Postgres / MS SQL support
+- Ledger / Group in downloads
+- Group statement
+- Keyboard shortcuts
+- Currency format
+- Currency decimal places
+- Add reference number, name and date
+- Cheque printing
+- Update script
+- Three digit decimal
+
+Not decided :
+- Cheque number and cheque date ?
+- Dr/Cr separate column in reports ?
+- Account code ?
+
+Optional :
+- Negative balance highlight
+- Income / Expense should have no opening balance
+- Theme email entries
+- Return to correct URL
+- Cash flow statement
+- Tooltips
+- Optimize

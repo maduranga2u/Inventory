@@ -1,0 +1,48 @@
+Webzash - Easy to use web based double entry accounting software
+
+Copyright (c) 2014 Damindu Maduranga <maduranga2u@gmail.com>
+
+Website     : http://webzash.org
+Source code : https://github.com/prashants/webzash
+
+Webzash includes the following open source software under other copyright
+notices and distributed according to the terms of their own licenses.
+
+1. CakePHP - PHP Framework
+	HOMEPAGE: http://cakephp.org
+	LICENSE: The MIT License
+
+2. jQuery - Javascript Framework
+	HOMEPAGE: http://jquery.com
+	LICENSE: The MIT License
+
+3. jQuery UI - jQuery based user interface components
+	HOMEPAGE: http://jqueryui.com
+	LICENSE: The MIT License
+
+4. Bootstrap - HTML and CSS Framework
+	HOMEPAGE: http://getbootstrap.com
+	LICENSE: The MIT License
+
+5. TinyColor - Javascript color manipulation
+	HOMEPAGE: https://github.com/bgrins/TinyColor
+	LICENSE: The MIT License
+
+6. Pick-A-Color - Javascript Color Picker
+	HOMEPAGE: https://github.com/lauren/pick-a-color
+	LICENSE: The MIT License
+
+7. BoostCake - CakePHP Bootstrap form plugin
+	HOMEPAGE: https://github.com/slywalker/cakephp-plugin-boost_cake
+	LICENSE: The MIT License
+
+8. Mousetrap - Handling keyboard shortcuts
+	HOMEPAGE: http://craig.is/killing/mice
+	LICENSE: Apache 2.0 license
+
+9. Select2 - The jQuery replacement for select boxes
+	HOMEPAGE: https://select2.github.io
+	LICENSE: The MIT License
+
+Whilst every effort has been made to ensure that information is correct, incase
+of any discrepancies please contact the author(s) of this software.
