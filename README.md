@@ -2,7 +2,6 @@ Step 1. Download Webzash v2.3 and unzip.
 https://github.com/prashants/webzash/releases/download/v2.3/webzash-v2.3.zip
 
 Step 2. Place Webzash folder on webroot.
-https://github.com/prashants/webzash
 
 Step 3. Download Inventory plugin and place on app/Plugin
 https://github.com/maduranga2u/Inventory
