@@ -57,5 +57,17 @@ class BalancesController extends InventoryAppController {
 		}
 		return $str;
 	}
+	/**
+ * Add a row in the entry via ajax
+ *
+ * @param string $addType
+ * @return void
+ */
+	function dashboard() {
+
+		$this->set('title_for_layout', __d('webzash', 'Inventory Dashboard'));
+		$this->loadModel('Item');
+		$this->set('total_items',$this->Item->find('count'));
+	}
 
 }

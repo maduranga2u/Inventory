@@ -39,11 +39,11 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<?php if ($this->Session->read('Auth.User')): ?>
-			<ul class="nav navbar-nav">
-
-				<li><?php echo $this->Html->link(__d('webzash', 'Categories'), array('plugin' => 'inventory', 'controller' => 'categories', 'action' => 'index')); ?></li>
+			<ul class="nav navbar-nav">	
+            	<li><?php echo $this->Html->link(__d('webzash', 'Dashboard'), array('plugin' => 'inventory', 'controller' => 'balances', 'action' => 'dashboard')); ?></li>			
 				<li><?php echo $this->Html->link(__d('webzash', 'Item'), array('plugin' => 'inventory', 'controller' => 'items', 'action' => 'index')); ?></li>
-                <li><?php echo $this->Html->link(__d('webzash', 'Client'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index')); ?></li>                                
+                <li><?php echo $this->Html->link(__d('webzash', 'Customers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index')); ?></li>
+                <li><?php echo $this->Html->link(__d('webzash', 'Suppliers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index')); ?></li>                                
 				
                 <li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Entries <b class="caret"></b></a>

@@ -26,13 +26,149 @@
  */
  ?>
 <script type="text/javascript">
-
 $(document).ready(function() {
+/* javascript floating point operations */
+	var jsFloatOps = function(param1, param2, op) {
+		param1 = param1 * 100;
+		param2 = param2 * 100;
+		param1 = param1.toFixed(0);
+		param2 = param2.toFixed(0);
+		param1 = Math.floor(param1);
+		param2 = Math.floor(param2);
+		var result = 0;
+		if (op == '+') {
+			result = param1 + param2;
+			result = result/100;
+			return result;
+		}
+		if (op == '*') {
+			result = param1 * param2;
+			result = result/10000;
+			return result;
+		}
+		if (op == '-') {
+			result = param1 - param2;
+			result = result/100;
+			return result;
+		}
+		if (op == '!=') {
+			if (param1 != param2)
+				return true;
+			else
+				return false;
+		}
+		if (op == '==') {
+			if (param1 == param2)
+				return true;
+			else
+				return false;
+		}
+		if (op == '>') {
+			if (param1 > param2)
+				return true;
+			else
+				return false;
+		}
+		if (op == '<') {
+			if (param1 < param2)
+				return true;
+			else
+				return false;
+		}
+	}
+
+	/* Calculating Dr and Cr total */
+	$(document).on('change', '.dr-item', function() {
+		var drTotal = 0;
+		var i=0;
+		var crTotal = 0;
+		$("table tr .dr-item").each(function() {
+			var curDr = $(this).prop('value');
+			curDr = parseFloat(curDr);
+			if (isNaN(curDr))
+				curDr = 0;
+			drTotal = jsFloatOps(drTotal, curDr, '+');
+			var curCr=$('#Stockentryitem'+i+'Rate').prop('value');
+			var curDr=$('#Stockentryitem'+i+'Amount').prop('value');
+			curCr = parseFloat(curCr);
+			if (isNaN(curCr)){}else{
+			
+			crCurTotal = jsFloatOps(curCr, curDr, '*');
+			
+			crTotal = jsFloatOps(crTotal, crCurTotal, '+');
+			}
+			i++;
+		});
+		$("table tr #dr-total").text(drTotal);
+		
+		/*$("table tr .cr-item").each(function() {
+			var curCr = $(this).prop('value');
+			curCr = parseFloat(curCr);
+			if (isNaN(curCr))
+				curCr = 0;
+			crTotal = jsFloatOps(crTotal, curCr, '+');
+		});*/
+		$("table tr #cr-total").text(crTotal);
+
+		if (jsFloatOps(drTotal, crTotal, '==')) {
+			$("table tr #dr-total").css("background-color", "#FFFF99");
+			$("table tr #cr-total").css("background-color", "#FFFF99");
+		} else {
+			$("table tr #dr-total").css("background-color", "#FFE9E8");
+			$("table tr #cr-total").css("background-color", "#FFE9E8");
+			
+		}
+	});	
+	$(document).on('change', '.cr-item', function() {
+		var drTotal = 0;
+		var crTotal = 0;
+		var i=0;
+		$("table tr .dr-item").each(function() {
+			var curDr = $(this).prop('value')
+			curDr = parseFloat(curDr);
+			if (isNaN(curDr))
+				curDr = 0;
+			drTotal = jsFloatOps(drTotal, curDr, '+');
+			var curCr=$('#Stockentryitem'+i+'Rate').prop('value');
+			var curDr=$('#Stockentryitem'+i+'Amount').prop('value');
+			curCr = parseFloat(curCr);
+			if (isNaN(curCr)){}else{				
+			crCurTotal = jsFloatOps(curCr, curDr, '*');			
+			crTotal = jsFloatOps(crTotal, crCurTotal, '+');
+			}
+			i++;
+		});
+		$("table tr #dr-total").text(drTotal);
+		
+		/*$("table tr .cr-item").each(function() {
+			var curCr = $(this).prop('value')
+			curCr = parseFloat(curCr);
+			if (isNaN(curCr))
+				curCr = 0;
+			crTotal = jsFloatOps(crTotal, curCr, '+');
+		});*/
+		$("table tr #cr-total").text(crTotal);
+
+		if (jsFloatOps(drTotal, crTotal, '==')) {
+			$("table tr #dr-total").css("background-color", "#FFFF99");
+			$("table tr #cr-total").css("background-color", "#FFFF99");
+		} else {
+			$("table tr #dr-total").css("background-color", "#FFE9E8");
+			$("table tr #cr-total").css("background-color", "#FFE9E8");
+			
+		}
+	});
+	/* Recalculate Total */
+	$(document).on('click', 'table td .recalculate', function() {
+		/* Recalculate Total */
+		$('.dr-item:first').trigger('change');
+		$('.cr-item:first').trigger('change');
+	});
 /* Add ledger row */
 	$(document).on('click', '.addRow', function() {
 		var x = document.getElementById("tr4").innerHTML;
-		x=x.replace(/[[0]]/g,''+$('#count').val()+']');
-		x=x.replace('_0',$('#count').val());
+		x=x.replace(/[[100]]/g,''+$('#count').val()+']');
+		x=x.replace('_100',$('#count').val());
 		$('#count').val(parseInt($('#count').val())+1);
 		$('#entry-table').append('<tr>'+x+'</tr>');
 	});
@@ -48,15 +184,21 @@ $(document).ready(function() {
 		$('#payment-table').append('<tr>'+x+'</tr>');
 	});
 		
-
+/* Calculate date range in javascript */
+	startDate = new Date(<?php echo strtotime(Configure::read('Account.startdate')) * 1000; ?>  + (new Date().getTimezoneOffset() * 60 * 1000));
+	endDate = new Date(<?php echo strtotime(Configure::read('Account.enddate')) * 1000; ?>  + (new Date().getTimezoneOffset() * 60 * 1000));
+	
 /* Setup jQuery datepicker ui */
 	$('#EntryDate').datepicker({
-		dateFormat: 'yy-mm-dd',
+		minDate: startDate,
+		maxDate: endDate,
+		dateFormat: '<?php echo Configure::read('Account.dateformatJS'); ?>',
 		numberOfMonths: 1,
 		  onSelect: function(dateText) {
     		$("[id^=date]").val(dateText);
   		}
 	});
+	$(".ledger-dropdown").select2({width:'100%'});
 });
 function avCheck(obj){
 
@@ -65,7 +207,7 @@ function avCheck(obj){
 		$.ajax({
 			url: '<?php echo $this->Html->url(array("controller" => "balances", "action" => "checkbalance")); ?>/'+obj.value,
 			success: function(data) {
-				//alert('#av'+a);
+				
 				arr=data.split('||');
 				$('#av'+a).val(arr[0]);
 				if(arr[1]!=0){
@@ -79,10 +221,10 @@ function avCheck(obj){
 </script>
 <table>
   <tr id="tr4" style="display:none;">
-<?php echo '<td>' . $this->Form->input('Stockentryitem.0.item_id', array('type' => 'select', 'options' => $Items, 'escape' => false,  'id'=>'sel[0]','onChange'=>'avCheck(this)','class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
-	echo '<td><div class="form-group-entryitem"><input type="text" id="av_0" class="dr-item form-control" name="data[Balance][0][value]"><input type="hidden" id="balid_0"  name="data[Balance][0][id]"></div> </td>';		
-		echo '<td>' . $this->Form->input('Stockentryitem.0.amount', array('label' => false, 'class' => 'dr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) .$this->Form->input('Stockentryitem.0.entrytype_id', array('type' => 'hidden','value'=>$entrytype['Entrytype']['id'])).$this->Form->input('Stockentryitem.0.created', array('type' => 'hidden','value'=>date('Y-m-d'),'id'=>'date0')).$this->Form->input('Stockentryitem.0.billNo', array('type' => 'hidden','value'=>$billNo+1)). '</td>';		
-		echo '<td>' . $this->Form->input('Stockentryitem.0.rate', array('label' => false, 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
+<?php echo '<td>' . $this->Form->input('Stockentryitem.100.item_id', array('type' => 'select', 'options' => $Items, 'escape' => false,  'id'=>'sel[100]','onChange'=>'avCheck(this)','class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
+	echo '<td><div class="form-group-entryitem"><input type="text" id="av_100" class="dr-item form-control" name="data[Balance][100][value]"><input type="hidden" id="balid_100"  name="data[Balance][5][id]"></div> </td>';		
+		echo '<td>' . $this->Form->input('Stockentryitem.100.amount', array('label' => false, 'class' => 'dr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) .$this->Form->input('Stockentryitem.100.entrytype_id', array('type' => 'hidden','value'=>$entrytype['Entrytype']['id'])).$this->Form->input('Stockentryitem.100.created', array('type' => 'hidden','value'=>date('Y-m-d'),'id'=>'date100')).$this->Form->input('Stockentryitem.100.billNo', array('type' => 'hidden','value'=>$billNo+1)). '</td>';		
+		echo '<td>' . $this->Form->input('Stockentryitem.100.rate', array('label' => false, 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
 		echo '<td>';
 		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addrow addRow', 'escape' => false));
 		echo '</td>';          	
@@ -97,7 +239,7 @@ echo '<tr id="payment-tr">';
 		
 		echo '<td>'.$this->Form->input('Entryitem.0.ledger_id', array('type' => 'select', 'options' => $ledger_options, 'escape' => false, 'disabled' => $ledgers_disabled, 'class' => 'ledger-dropdown form-control', 'label' =>false, 'div' => array('class' => 'form-group-entryitem'))).'</td>';		
 		echo '<td>' . $this->Form->input('Entryitem.1.ledger_id', array('type' => 'select', 'options' => $ledger_options, 'escape' => false, 'disabled' => $ledgers_disabled, 'class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))). '</td>';	
-		echo '<td>' . $this->Form->input('Entryitem.0.total', array('label' => false, 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';	
+		echo '<td>' . $this->Form->input('Entryitem.0.total', array('label' => false, 'class' => 'total form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';	
 		echo '<td>';
 		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addrow addPay', 'escape' => false));
 		echo '</td>';
@@ -128,8 +270,40 @@ echo '<tr id="payment-tr">';
 		echo $this->Form->input('narration', array('type' => 'textarea', 'label' => __d('webzash', 'Narration'), 'rows' => '3'));
 		echo $this->Form->input('Billdetail.client_id', array('type' => 'select', 'options' => $clients, 'escape' => false, 'class' => 'ledger-dropdown form-control', 'label' =>  __d('webzash', $lblCust), 'div' => array('class' => 'form-group-entryitem')));
 		?>
-	 <input type="hidden" id="pcount" value="2"/>
-    <?php	
+	 	
+		
+		
+		
+<?php echo '<table class="stripped extra" id="entry-table">';
+
+	/* Header */
+	echo '<tr>';
+	
+	echo '<th>' . __d('webzash', 'Item') . '</th>';
+	echo '<th>' . __d('webzash', 'Available') . '</th>';
+	echo '<th>' . __d('webzash', 'Quantity') . '</th>';
+	echo '<th>' . __d('webzash', 'Rate') . '</th>';
+	echo '<th>' . __d('webzash', 'Actions') . '</th>';
+	echo '</tr>';
+
+	/* Intial rows */
+	//$row=0;
+	for($row=0;$row<5;$row++){
+		echo '<tr>';		
+		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.item_id', array('type' => 'select', 'options' => $Items, 'escape' => false, 'id'=>'sel[' . $row . ']','onChange'=>'avCheck(this)', 'class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
+		echo '<td><div class="form-group-entryitem"><input type="text" id="av' . $row . '" class="dr-item form-control" name="data[Balance][' . $row . '][value]"><input type="hidden" id="balid' . $row . '"  name="data[Balance][' . $row . '][id]"></div> </td>';		
+		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.amount', array('label' => false,'class' => 'dr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) .$this->Form->input('Stockentryitem.' . $row . '.entrytype_id', array('type' => 'hidden','value'=>$entrytype['Entrytype']['id'])) .$this->Form->input('Stockentryitem.' . $row . '.created', array('type' => 'hidden','value'=>date('Y-m-d'),'id'=>'date'.$row)).$this->Form->input('Stockentryitem.' . $row . '.billNo', array('type' => 'hidden','value'=>$billNo+1)). '</td>';		
+		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.rate', array('label' => false, 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
+		echo '<td>';
+		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addrow addRow', 'escape' => false));
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '<tr class="bold-text"><td>Total</td><td></td><td id="dr-total" style="background-color: rgb(255, 255, 153);">0</td><td id="cr-total" style="background-color: rgb(255, 255, 153);">0</td><td><span class="recalculate"><i class="glyphicon glyphicon-refresh"></i></span></td><td></td></tr>';
+	echo '</table>';
+
+	echo '<br /><input type="hidden" id="count" value="5"/>';	
+  echo  '<input type="hidden" id="pcount" value="2"/>';	
 		
 echo '<table class="stripped extra" id="payment-table">';
 
@@ -148,54 +322,22 @@ echo '<table class="stripped extra" id="payment-table">';
 		
 		echo '<td>'.$this->Form->input('Entryitem.0.ledger_id', array('type' => 'select', 'options' => $ledger_options, 'escape' => false, 'disabled' => $ledgers_disabled, 'class' => 'ledger-dropdown form-control', 'label' =>false, 'div' => array('class' => 'form-group-entryitem'))).'</td>';		
 		echo '<td>' . $this->Form->input('Entryitem.1.ledger_id', array('type' => 'select', 'options' => $ledger_options, 'escape' => false, 'disabled' => $ledgers_disabled, 'class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))). '</td>';	
-		echo '<td>' . $this->Form->input('Entryitem.0.total', array('label' => false,'required'=>'required', 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';	
+		echo '<td>' . $this->Form->input('Entryitem.0.total', array('label' => false,'required'=>'required', 'class' => 'total form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';	
 		echo '<td>';
 		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addrow addPay', 'escape' => false));
 		echo '</td>';
 		echo '</tr>';
-
+	
 	echo '</table>';
 	
-	echo '<br/>';	
-		
-		
-		
-echo '<table class="stripped extra" id="entry-table">';
-
-	/* Header */
-	echo '<tr>';
-	
-	echo '<th>' . __d('webzash', 'Item') . '</th>';
-	echo '<th>' . __d('webzash', 'Available') . '</th>';
-	echo '<th>' . __d('webzash', 'Quantity') . '</th>';
-	echo '<th>' . __d('webzash', 'Rate') . '</th>';
-	echo '<th>' . __d('webzash', 'Actions') . '</th>';
-	echo '</tr>';
-
-	/* Intial rows */
-	//$row=0;
-	for($row=0;$row<5;$row++){
-		echo '<tr>';		
-		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.item_id', array('type' => 'select', 'options' => $Items, 'escape' => false, 'id'=>'sel[' . $row . ']','onChange'=>'avCheck(this)', 'class' => 'ledger-dropdown form-control', 'label' => false, 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
-		echo '<td><div class="form-group-entryitem"><input type="text" id="av' . $row . '" class="dr-item form-control" name="data[Balance][' . $row . '][value]"><input type="hidden" id="balid' . $row . '"  name="data[Balance][' . $row . '][id]"></div> </td>';		
-		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.amount', array('label' => false, 'class' => 'dr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) .$this->Form->input('Stockentryitem.' . $row . '.entrytype_id', array('type' => 'hidden','value'=>$entrytype['Entrytype']['id'])) .$this->Form->input('Stockentryitem.' . $row . '.created', array('type' => 'hidden','value'=>date('Y-m-d'),'id'=>'date'.$row)).$this->Form->input('Stockentryitem.' . $row . '.billNo', array('type' => 'hidden','value'=>$billNo+1)). '</td>';		
-		echo '<td>' . $this->Form->input('Stockentryitem.' . $row . '.rate', array('label' => false, 'class' => 'cr-item form-control', 'div' => array('class' => 'form-group-entryitem'))) . '</td>';
-		echo '<td>';
-		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addrow addRow', 'escape' => false));
-		echo '</td>';
-		echo '</tr>';
-	}
-	echo '</table>';
-
-	echo '<br /><input type="hidden" id="count" value="5"/>';	
-   
+	echo '<br/>';
    echo '<div class="form-group">';
 	echo $this->Form->submit(__d('webzash', 'Submit'), array(
 		'div' => false,
 		'class' => 'btn btn-primary'
 	));
 	echo $this->Html->tag('span', '', array('class' => 'link-pad'));
-	echo $this->Html->link(__d('webzash', 'Cancel'), array('plugin' => 'invoices', 'controller' => 'categories', 'action' => 'index'), array('class' => 'btn btn-default'));
+	echo $this->Html->link(__d('webzash', 'Cancel'), array('plugin' => 'invoices', 'controller' => 'balances', 'action' => 'dashboard'), array('class' => 'btn btn-default'));
 	echo '</div>';
 
 	echo $this->Form->end();

@@ -47,7 +47,7 @@ class ClientsController extends InventoryAppController {
  * @return void
  */
 	public function index() {
-		$this->set('title_for_layout', __d('webzash', 'List Of Vendors/Customers'));
+		$this->set('title_for_layout', __d('webzash', 'List Of Suppliers/Customers'));
 		$this->Client->recursive = 0;
 		$this->set('clients', $this->Paginator->paginate());
 	}

@@ -30,6 +30,9 @@
         <li>
         	<?php echo $this->Html->link(__d('webzash', 'Add Item'), array('plugin' => 'inventory', 'controller' => 'items', 'action' => 'add'),array('class'=>'btn btn-primary')); ?>
         </li>
+        <li>
+        	<?php echo $this->Html->link(__d('webzash', 'Add Categories'), array('plugin' => 'inventory', 'controller' => 'Categories', 'action' => 'add'),array('class'=>'btn btn-primary')); ?>
+        </li>
     </ul>
 </div>
 <table class="stripped">
