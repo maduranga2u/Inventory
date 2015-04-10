@@ -3,8 +3,9 @@ https://github.com/prashants/webzash/releases/download/v2.3/webzash-v2.3.zip
 
 Step 2. Place Webzash folder on webroot.
 
-Step 3. Download Inventory plugin and place on app/Plugin
-https://github.com/maduranga2u/Inventory
+Step 3. Download Inventory plugin and rename to Inventory then place on app/Plugin
+
+https://github.com/maduranga2u/Inventory/archive/master.zip
 
 Step 4. Edit the app/Config/bootstrap.php file and change the following lines 
 CakePlugin::load('Webzash', array('routes' => true, 'bootstrap' => true));
