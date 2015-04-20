@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 08, 2015 at 04:02 PM
+-- Generation Time: Apr 20, 2015 at 05:41 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -27,13 +27,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `balances` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) NOT NULL,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(18) NOT NULL,
   `value` float NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -42,22 +43,23 @@ CREATE TABLE IF NOT EXISTS `balances` (
 --
 
 CREATE TABLE IF NOT EXISTS `billdetails` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `billNo` int(11) DEFAULT NULL,
-  `billType` int(11) DEFAULT NULL,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `billNo` bigint(18) DEFAULT NULL,
+  `billType` bigint(18) DEFAULT NULL,
   `date` date NOT NULL,
-  `description` text NOT NULL,
-  `cheque` varchar(100) DEFAULT NULL,
-  `payment_type` varchar(100) NOT NULL DEFAULT '0',
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `cheque` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `payment_type` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `card_type` varchar(20) DEFAULT NULL,
-  `card_no` int(11) DEFAULT NULL,
-  `card_name` varchar(20) DEFAULT NULL,
-  `currency_name` varchar(20) DEFAULT NULL,
-  `client_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `card_type` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `card_no` bigint(18) DEFAULT NULL,
+  `card_name` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `currency_name` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `client_id` bigint(18) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -66,13 +68,15 @@ CREATE TABLE IF NOT EXISTS `billdetails` (
 --
 
 CREATE TABLE IF NOT EXISTS `categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `description` text,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_id` (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -81,16 +85,16 @@ CREATE TABLE IF NOT EXISTS `categories` (
 --
 
 CREATE TABLE IF NOT EXISTS `clients` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `description` text,
-  `mobile` varchar(20) DEFAULT NULL,
-  `land` varchar(20) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `mobile` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `land` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -141,12 +145,12 @@ CREATE TABLE IF NOT EXISTS `entryitems` (
 --
 
 CREATE TABLE IF NOT EXISTS `feeds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `entrytype` varchar(20) NOT NULL,
+  `entrytype` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -155,16 +159,19 @@ CREATE TABLE IF NOT EXISTS `feeds` (
 --
 
 CREATE TABLE IF NOT EXISTS `items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `description` text,
-  `size` varchar(50) DEFAULT NULL,
-  `unit` varchar(20) DEFAULT NULL,
-  `category_id` int(11) NOT NULL,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `size` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `unit` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `category_id` bigint(18) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_id` (`id`),
+  KEY `category_id` (`category_id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -173,17 +180,47 @@ CREATE TABLE IF NOT EXISTS `items` (
 --
 
 CREATE TABLE IF NOT EXISTS `stockentryitems` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) NOT NULL,
+  `id` bigint(18) NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(18) NOT NULL,
   `amount` float NOT NULL,
   `rate` float NOT NULL,
-  `entrytype_id` int(11) NOT NULL,
-  `billNo` int(11) NOT NULL,
+  `entrytype_id` bigint(18) NOT NULL,
+  `billNo` bigint(18) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `balances`
+--
+ALTER TABLE `balances`
+  ADD CONSTRAINT `balances_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
+
+--
+-- Constraints for table `billdetails`
+--
+ALTER TABLE `billdetails`
+  ADD CONSTRAINT `billdetails_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`);
+
+--
+-- Constraints for table `items`
+--
+ALTER TABLE `items`
+  ADD CONSTRAINT `items_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+
+--
+-- Constraints for table `stockentryitems`
+--
+ALTER TABLE `stockentryitems`
+  ADD CONSTRAINT `stockentryitems_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
