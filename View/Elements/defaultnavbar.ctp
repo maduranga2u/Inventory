@@ -42,8 +42,8 @@
 			<ul class="nav navbar-nav">	
             	<li><?php echo $this->Html->link(__d('webzash', 'Dashboard'), array('plugin' => 'inventory', 'controller' => 'balances', 'action' => 'dashboard')); ?></li>			
 				<li><?php echo $this->Html->link(__d('webzash', 'Item'), array('plugin' => 'inventory', 'controller' => 'items', 'action' => 'index')); ?></li>
-                <li><?php echo $this->Html->link(__d('webzash', 'Customers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index')); ?></li>
-                <li><?php echo $this->Html->link(__d('webzash', 'Suppliers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index')); ?></li>                                
+                <li><?php echo $this->Html->link(__d('webzash', 'Customers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index','customer')); ?></li>
+                <li><?php echo $this->Html->link(__d('webzash', 'Suppliers'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'index','supplier')); ?></li>                                
 				
                 <li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Entries <b class="caret"></b></a>

@@ -91,7 +91,7 @@ $(document).ready(function() {
 
 		//echo $this->Form->input('showall', array('type' => 'checkbox', 'label' => __d('webzash', 'Show all entries'), 'class' => 'checkbox'));
 		echo $this->Form->input('catogery_id', array('label' => __d('webzash', 'Catogery'),'options' => $categories));
-		echo $this->Form->input('description', array('label' => __d('webzash', 'Supplier')));
+		echo $this->Form->input('client_id', array('label' => __d('webzash', 'Client'),'options' => $clients));
 		echo $this->Form->input('enddate', array('label' => __d('webzash', 'End date')));
 		echo '</div>';
 		echo '</div>';

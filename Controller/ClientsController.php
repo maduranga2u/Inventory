@@ -46,8 +46,10 @@ class ClientsController extends InventoryAppController {
  *
  * @return void
  */
-	public function index() {
+	public function index($clienttype=null) {
 		$this->set('title_for_layout', __d('webzash', 'List Of Suppliers/Customers'));
+		
+		$this->Paginator->settings = array('conditions' => array('Client.client_type' => $clienttype),'limit' => 10);
 		$this->Client->recursive = 0;
 		$this->set('clients', $this->Paginator->paginate());
 	}
@@ -72,7 +74,9 @@ class ClientsController extends InventoryAppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($clienttype= null) {
+
+	$this->set('clients', $clienttype);
 		if ($this->request->is('post')) {
 			$this->Client->create();
 			if ($this->Client->save($this->request->data)) {

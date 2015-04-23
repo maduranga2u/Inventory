@@ -28,7 +28,10 @@
 <div id="actionlinks">
     <ul>
         <li>
-        	<?php echo $this->Html->link(__d('webzash', 'Add Vendor or Customer'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'add'),array('class'=>'btn btn-primary')); ?>
+        	<?php echo $this->Html->link(__d('webzash', 'Customer'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'add','customer'),array('class'=>'btn btn-primary')); ?>
+        </li>
+        <li>
+        	<?php echo $this->Html->link(__d('webzash', 'Supplier'), array('plugin' => 'inventory', 'controller' => 'clients', 'action' => 'add','supplier'),array('class'=>'btn btn-primary')); ?>
         </li>
     </ul>
 </div>

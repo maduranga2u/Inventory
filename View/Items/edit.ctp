@@ -40,6 +40,8 @@
 		echo $this->Form->input('description');
 		echo $this->Form->input('size');
 		echo $this->Form->input('unit');
+		echo $this->Form->input('purchase_price');
+		echo $this->Form->input('sale_price');
 		echo $this->Form->input('category_id');
 	?>
 	<?php echo '<div class="form-group">';

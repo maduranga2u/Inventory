@@ -409,16 +409,16 @@ public $uses = array( 'Webzash.Group', 'Webzash.Ledger','Webzash.Entrytype', 'We
 			//$this->loadModel('Salesregister');
 			$this->set('title_for_layout', __d('webzash', 'Stock Balance'));
 			$date=date('Y-m-d H:i:s');
-			$description="";
+			$whereappend="";
 			if ($this->request->is('post')) {
 				if(!empty($this->request->data['Report']['enddate'])){
 					$date=date('Y-m-d',strtotime($this->request->data['Report']['enddate']));
 				}
-				if(!empty($this->request->data['Report']['description'])){
-					$description='AND stockentryitems.billNo in( select billNo From '.Configure::read('Account.prefix').'billdetails where description LIKE "%'. $this->request->data['Report']['description'].'%")';
+				if(!empty($this->request->data['Report']['client_id'])){
+					$whereappend.='AND stockentryitems.billNo in( select billNo From billdetails where client_id LIKE "%'. $this->request->data['Report']['client_id'].'%")';
 				}
 				if(!empty($this->request->data['Report']['catogery_id'])){
-					$description='AND Stockcode.category_id ='. $this->request->data['Report']['catogery_id'].'';
+					$whereappend.=' AND Stockcode.category_id ='. $this->request->data['Report']['catogery_id'].'';
 				}
 			}
 			
@@ -428,14 +428,17 @@ public $uses = array( 'Webzash.Group', 'Webzash.Ledger','Webzash.Entrytype', 'We
 			$this->set('sales_results',$this->Stockentryitem->query('SELECT Stockcode.name,sum(stockentryitems.amount),sum(stockentryitems .amount*stockentryitems .rate) as val,stockentryitems.`entrytype_id`
 			 FROM stockentryitems as stockentryitems Left Join items as Stockcode on (Stockcode .id=`stockentryitems`.item_id) 
 			 Left Join billdetails as Billdetail on (Billdetail.billNo=`stockentryitems`.billNo)
-			WHERE `stockentryitems`.`created` < "'.$date.'" AND stockentryitems.`entrytype_id`=1 '.$description.'
+			WHERE `stockentryitems`.`created` < "'.$date.'" AND stockentryitems.`entrytype_id`=1 '.$whereappend.'
 			 group by stockentryitems.item_id'));
 			
-$this->set('purchase_results',$this->Stockentryitem->query('SELECT Stockcode.name,sum(stockentryitems.amount),sum(stockentryitems.amount*stockentryitems.rate) as val,stockentryitems.`entrytype_id` FROM stockentryitems as stockentryitems Left Join items as Stockcode on (Stockcode .id=`stockentryitems`.item_id) WHERE `stockentryitems`.`created` < "'.$date.'" AND stockentryitems.`entrytype_id`=2 '.$description.' group by stockentryitems.item_id'));
-	$this->loadModel('Inventory.Category');
-	$categories = $this->Category->find('list');
-		//print_r();exit();
-		$this->set(compact('categories'));
+			$this->set('purchase_results',$this->Stockentryitem->query('SELECT Stockcode.name,sum(stockentryitems.amount),sum(stockentryitems.amount*stockentryitems.rate) as val,stockentryitems.`entrytype_id` FROM stockentryitems as stockentryitems Left Join items as Stockcode on (Stockcode .id=`stockentryitems`.item_id) WHERE `stockentryitems`.`created` < "'.$date.'" AND stockentryitems.`entrytype_id`=2 '.$whereappend.' group by stockentryitems.item_id'));
+			$this->loadModel('Inventory.Category');
+			$categories = $this->Category->find('list');
+			$this->set(compact('categories'));
+			
+			$this->loadModel('Inventory.Client');
+			$clients = $this->Client->find('list');
+			$this->set(compact('clients'));
 	}
 	public function bill($id = null) {
 		$billNo=$id;

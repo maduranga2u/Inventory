@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2015 at 05:41 AM
+-- Generation Time: Apr 23, 2015 at 04:46 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `mobile` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `land` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `client_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -165,6 +166,8 @@ CREATE TABLE IF NOT EXISTS `items` (
   `size` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `unit` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `category_id` bigint(18) NOT NULL,
+  `sale_price` decimal(25,2) DEFAULT NULL,
+  `purchase_price` decimal(25,2) DEFAULT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -223,4 +226,3 @@ ALTER TABLE `stockentryitems`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

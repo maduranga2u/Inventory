@@ -35,6 +35,7 @@
 		)); ?>
 	<?php
 		echo $this->Form->input('name');
+		echo $this->Form->input('client_type', array('type' => 'hidden','value' => $clients));
 		echo $this->Form->input('description');
 		echo $this->Form->input('mobile');
 		echo $this->Form->input('land');

@@ -43,6 +43,8 @@
 			<th><?php echo $this->Paginator->sort('description'); ?></th>
 			<th><?php echo $this->Paginator->sort('size'); ?></th>
 			<th><?php echo $this->Paginator->sort('unit'); ?></th>
+            <th><?php echo $this->Paginator->sort('purchase_price'); ?></th>
+			<th><?php echo $this->Paginator->sort('sale_price'); ?></th>
 			<th><?php echo $this->Paginator->sort('category_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
@@ -56,6 +58,8 @@
 		<td><?php echo h($item['Item']['description']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['size']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['unit']); ?>&nbsp;</td>
+        <td><?php echo h($item['Item']['purchase_price']);?>&nbsp;</td>
+		<td><?php echo h($item['Item']['sale_price']);?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($item['Category']['name'], array('controller' => 'items', 'action' => 'view', $item['Category']['id'])); ?>
 		</td>
